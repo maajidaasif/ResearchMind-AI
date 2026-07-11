@@ -1,0 +1,15 @@
+backend/venv/
+__pycache__/
+*.pyc
+.env
+node_modules/
+.vscode/
+*.log
+
+backend/__pycache__/
+frontend/node_modules/
+backend/uploads/
+backend/processed/
+backend/vector_db/
+database/*.db
+*.zip
