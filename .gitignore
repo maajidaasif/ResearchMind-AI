@@ -13,3 +13,6 @@ backend/processed/
 backend/vector_db/
 database/*.db
 *.zip
+
+# Ignore local AI models
+*.gguf

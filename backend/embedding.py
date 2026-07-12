@@ -1,5 +1,4 @@
 import os
-import pickle
 
 from sentence_transformers import SentenceTransformer
 
@@ -18,18 +17,37 @@ def generate_embeddings(chunks):
 
 if __name__ == "__main__":
 
-    pdf_path = "uploads/Paper 1-Attention Is All You Need.pdf"
-
-    cleaned_text = process_pdf(pdf_path)
-
-    chunks = split_text(cleaned_text)
-
-    embeddings = generate_embeddings(chunks)
-
+    all_chunks = []
     metadata = []
 
-    for chunk in chunks:
-        metadata.append(chunk)
+    uploads_folder = "uploads"
+
+    pdf_files = [
+        file for file in os.listdir(uploads_folder)
+        if file.lower().endswith(".pdf")
+    ]
+
+    print(f"\nFound {len(pdf_files)} PDF(s).\n")
+
+    for pdf_file in pdf_files:
+
+        pdf_path = os.path.join(uploads_folder, pdf_file)
+
+        print(f"Processing: {pdf_file}")
+
+        cleaned_text = process_pdf(pdf_path)
+
+        chunks = split_text(cleaned_text)
+
+        all_chunks.extend(chunks)
+
+        for chunk in chunks:
+            metadata.append({
+                "paper_name": pdf_file,
+                "chunk": chunk
+            })
+
+    embeddings = generate_embeddings(all_chunks)
 
     db = VectorDatabase()
 
@@ -37,8 +55,9 @@ if __name__ == "__main__":
 
     db.save_database()
 
-    print("\nFAISS Database Created Successfully!")
-
-    print("Total Chunks :", len(chunks))
-
-    print("Total Embeddings :", len(embeddings))
+    print("\n===================================")
+    print("FAISS Database Created Successfully!")
+    print("===================================")
+    print(f"Total PDFs       : {len(pdf_files)}")
+    print(f"Total Chunks     : {len(all_chunks)}")
+    print(f"Total Embeddings : {len(embeddings)}")
