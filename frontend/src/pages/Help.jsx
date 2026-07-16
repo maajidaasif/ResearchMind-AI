@@ -1,4 +1,5 @@
 import MainLayout from "../layouts/MainLayout";
+
 import {
   CircleHelp,
   Mail,
@@ -7,18 +8,18 @@ import {
 } from "lucide-react";
 
 function Help() {
-
   return (
-
     <MainLayout>
 
-      <h1 className="text-4xl font-bold text-white">
+      {/* Header */}
+
+      <h1 className="text-4xl font-bold text-[var(--primary-text)]">
 
         Help & Support
 
       </h1>
 
-      <p className="text-slate-400 mt-3">
+      <p className="text-[var(--secondary-text)] mt-3">
 
         Need assistance? Find answers to common questions below.
 
@@ -26,16 +27,27 @@ function Help() {
 
       {/* FAQ */}
 
-      <div className="mt-10 bg-[#111C44] rounded-3xl border border-slate-700 p-8">
+      <div
+        className="
+          mt-10
+          bg-[var(--card-bg)]
+          rounded-3xl
+          border
+          border-[var(--border-color)]
+          p-8
+          transition-colors
+          duration-300
+        "
+      >
 
         <div className="flex items-center gap-3 mb-6">
 
           <CircleHelp
-            className="text-indigo-400"
+            className="text-[var(--primary-text)]"
             size={28}
           />
 
-          <h2 className="text-2xl text-white font-semibold">
+          <h2 className="text-2xl text-[var(--primary-text)] font-semibold">
 
             Frequently Asked Questions
 
@@ -45,15 +57,21 @@ function Help() {
 
         <div className="space-y-6">
 
-          <div>
+          <div
+            className="
+              border-b
+              border-[var(--border-color)]
+              pb-6
+            "
+          >
 
-            <h3 className="text-white font-semibold">
+            <h3 className="text-[var(--primary-text)] font-semibold">
 
               How do I upload research papers?
 
             </h3>
 
-            <p className="text-slate-400 mt-2">
+            <p className="text-[var(--secondary-text)] mt-2">
 
               Go to Upload Papers and select your PDF files.
 
@@ -61,15 +79,21 @@ function Help() {
 
           </div>
 
-          <div>
+          <div
+            className="
+              border-b
+              border-[var(--border-color)]
+              pb-6
+            "
+          >
 
-            <h3 className="text-white font-semibold">
+            <h3 className="text-[var(--primary-text)] font-semibold">
 
               What file formats are supported?
 
             </h3>
 
-            <p className="text-slate-400 mt-2">
+            <p className="text-[var(--secondary-text)] mt-2">
 
               Currently only PDF (.pdf) research papers.
 
@@ -79,13 +103,13 @@ function Help() {
 
           <div>
 
-            <h3 className="text-white font-semibold">
+            <h3 className="text-[var(--primary-text)] font-semibold">
 
               Is my research data secure?
 
             </h3>
 
-            <p className="text-slate-400 mt-2">
+            <p className="text-[var(--secondary-text)] mt-2">
 
               Yes. Your papers remain stored locally during development.
 
@@ -101,20 +125,46 @@ function Help() {
 
       <div className="grid md:grid-cols-3 gap-6 mt-10">
 
-        <div className="bg-[#111C44] rounded-3xl border border-slate-700 p-6">
+        {/* Email */}
 
-          <Mail
-            className="text-indigo-400"
-            size={28}
-          />
+        <div
+          className="
+            bg-[var(--card-bg)]
+            rounded-3xl
+            border
+            border-[var(--border-color)]
+            p-6
+            transition
+            hover:bg-[var(--card-hover)]
+          "
+        >
 
-          <h3 className="text-white text-xl font-semibold mt-4">
+          <div
+            className="
+              w-12
+              h-12
+              rounded-xl
+              bg-[var(--card-hover)]
+              flex
+              items-center
+              justify-center
+            "
+          >
+
+            <Mail
+              className="text-[var(--primary-text)]"
+              size={25}
+            />
+
+          </div>
+
+          <h3 className="text-[var(--primary-text)] text-xl font-semibold mt-4">
 
             Email
 
           </h3>
 
-          <p className="text-slate-400 mt-2">
+          <p className="text-[var(--secondary-text)] mt-2">
 
             support@researchmind.ai
 
@@ -122,20 +172,46 @@ function Help() {
 
         </div>
 
-        <div className="bg-[#111C44] rounded-3xl border border-slate-700 p-6">
+        {/* Live Chat */}
 
-          <MessageCircle
-            className="text-indigo-400"
-            size={28}
-          />
+        <div
+          className="
+            bg-[var(--card-bg)]
+            rounded-3xl
+            border
+            border-[var(--border-color)]
+            p-6
+            transition
+            hover:bg-[var(--card-hover)]
+          "
+        >
 
-          <h3 className="text-white text-xl font-semibold mt-4">
+          <div
+            className="
+              w-12
+              h-12
+              rounded-xl
+              bg-[var(--card-hover)]
+              flex
+              items-center
+              justify-center
+            "
+          >
+
+            <MessageCircle
+              className="text-[var(--primary-text)]"
+              size={25}
+            />
+
+          </div>
+
+          <h3 className="text-[var(--primary-text)] text-xl font-semibold mt-4">
 
             Live Chat
 
           </h3>
 
-          <p className="text-slate-400 mt-2">
+          <p className="text-[var(--secondary-text)] mt-2">
 
             Available in Module 3.
 
@@ -143,20 +219,46 @@ function Help() {
 
         </div>
 
-        <div className="bg-[#111C44] rounded-3xl border border-slate-700 p-6">
+        {/* Documentation */}
 
-          <BookOpen
-            className="text-indigo-400"
-            size={28}
-          />
+        <div
+          className="
+            bg-[var(--card-bg)]
+            rounded-3xl
+            border
+            border-[var(--border-color)]
+            p-6
+            transition
+            hover:bg-[var(--card-hover)]
+          "
+        >
 
-          <h3 className="text-white text-xl font-semibold mt-4">
+          <div
+            className="
+              w-12
+              h-12
+              rounded-xl
+              bg-[var(--card-hover)]
+              flex
+              items-center
+              justify-center
+            "
+          >
+
+            <BookOpen
+              className="text-[var(--primary-text)]"
+              size={25}
+            />
+
+          </div>
+
+          <h3 className="text-[var(--primary-text)] text-xl font-semibold mt-4">
 
             Documentation
 
           </h3>
 
-          <p className="text-slate-400 mt-2">
+          <p className="text-[var(--secondary-text)] mt-2">
 
             User guide coming soon.
 
@@ -167,9 +269,7 @@ function Help() {
       </div>
 
     </MainLayout>
-
   );
-
 }
 
 export default Help;

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+
 import MainLayout from "../layouts/MainLayout";
 
 import {
@@ -10,34 +11,36 @@ import {
 } from "lucide-react";
 
 function Profile() {
-
   const navigate = useNavigate();
 
   const user =
-    JSON.parse(localStorage.getItem("user")) || {};
+    JSON.parse(
+      localStorage.getItem("user")
+    ) || {};
 
   const firstLetter =
-    (user.full_name || "R").charAt(0).toUpperCase();
+    (user.full_name || "R")
+      .charAt(0)
+      .toUpperCase();
 
   const logout = () => {
-
     localStorage.clear();
 
     navigate("/");
-
   };
 
   return (
-
     <MainLayout>
 
-      <h1 className="text-4xl font-bold text-white">
+      {/* Header */}
+
+      <h1 className="text-4xl font-bold text-[var(--primary-text)]">
 
         My Profile
 
       </h1>
 
-      <p className="text-slate-400 mt-3">
+      <p className="text-[var(--secondary-text)] mt-3">
 
         Manage your ResearchMind AI account.
 
@@ -45,23 +48,52 @@ function Profile() {
 
       {/* Profile Card */}
 
-      <div className="mt-10 bg-[#111C44] rounded-3xl border border-slate-700 p-10">
+      <div
+        className="
+          mt-10
+          bg-[var(--card-bg)]
+          rounded-3xl
+          border
+          border-[var(--border-color)]
+          p-10
+          transition-colors
+          duration-300
+        "
+      >
+
+        {/* User */}
 
         <div className="flex flex-col items-center">
 
-          <div className="w-28 h-28 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 flex items-center justify-center text-white text-5xl font-bold shadow-xl">
+          <div
+            className="
+              w-28
+              h-28
+              rounded-full
+              bg-[var(--button-bg)]
+              text-[var(--button-text)]
+              flex
+              items-center
+              justify-center
+              text-5xl
+              font-bold
+              border
+              border-[var(--border-color)]
+            "
+          >
 
             {firstLetter}
 
           </div>
 
-          <h2 className="text-3xl font-bold text-white mt-6">
+          <h2 className="text-3xl font-bold text-[var(--primary-text)] mt-6">
 
-            {user.full_name}
+            {user.full_name ||
+              "Researcher"}
 
           </h2>
 
-          <p className="text-slate-400 mt-2">
+          <p className="text-[var(--secondary-text)] mt-2">
 
             Researcher
 
@@ -73,16 +105,26 @@ function Profile() {
 
         <div className="grid md:grid-cols-2 gap-6 mt-10">
 
-          <div className="bg-[#081028] rounded-2xl p-6">
+          {/* Full Name */}
+
+          <div
+            className="
+              bg-[var(--card-hover)]
+              border
+              border-[var(--border-color)]
+              rounded-2xl
+              p-6
+            "
+          >
 
             <div className="flex items-center gap-3">
 
               <User
-                className="text-indigo-400"
+                className="text-[var(--primary-text)]"
                 size={22}
               />
 
-              <span className="text-white font-semibold">
+              <span className="text-[var(--primary-text)] font-semibold">
 
                 Full Name
 
@@ -90,24 +132,35 @@ function Profile() {
 
             </div>
 
-            <p className="text-slate-400 mt-3">
+            <p className="text-[var(--secondary-text)] mt-3">
 
-              {user.full_name}
+              {user.full_name ||
+                "Researcher"}
 
             </p>
 
           </div>
 
-          <div className="bg-[#081028] rounded-2xl p-6">
+          {/* Email */}
+
+          <div
+            className="
+              bg-[var(--card-hover)]
+              border
+              border-[var(--border-color)]
+              rounded-2xl
+              p-6
+            "
+          >
 
             <div className="flex items-center gap-3">
 
               <Mail
-                className="text-indigo-400"
+                className="text-[var(--primary-text)]"
                 size={22}
               />
 
-              <span className="text-white font-semibold">
+              <span className="text-[var(--primary-text)] font-semibold">
 
                 Email
 
@@ -115,24 +168,35 @@ function Profile() {
 
             </div>
 
-            <p className="text-slate-400 mt-3">
+            <p className="text-[var(--secondary-text)] mt-3">
 
-              {user.email}
+              {user.email ||
+                "No email available"}
 
             </p>
 
           </div>
 
-          <div className="bg-[#081028] rounded-2xl p-6">
+          {/* Role */}
+
+          <div
+            className="
+              bg-[var(--card-hover)]
+              border
+              border-[var(--border-color)]
+              rounded-2xl
+              p-6
+            "
+          >
 
             <div className="flex items-center gap-3">
 
               <ShieldCheck
-                className="text-green-400"
+                className="text-[var(--primary-text)]"
                 size={22}
               />
 
-              <span className="text-white font-semibold">
+              <span className="text-[var(--primary-text)] font-semibold">
 
                 Role
 
@@ -140,7 +204,7 @@ function Profile() {
 
             </div>
 
-            <p className="text-slate-400 mt-3">
+            <p className="text-[var(--secondary-text)] mt-3">
 
               Researcher
 
@@ -148,16 +212,26 @@ function Profile() {
 
           </div>
 
-          <div className="bg-[#081028] rounded-2xl p-6">
+          {/* Member Since */}
+
+          <div
+            className="
+              bg-[var(--card-hover)]
+              border
+              border-[var(--border-color)]
+              rounded-2xl
+              p-6
+            "
+          >
 
             <div className="flex items-center gap-3">
 
               <Calendar
-                className="text-yellow-400"
+                className="text-[var(--primary-text)]"
                 size={22}
               />
 
-              <span className="text-white font-semibold">
+              <span className="text-[var(--primary-text)] font-semibold">
 
                 Member Since
 
@@ -165,7 +239,7 @@ function Profile() {
 
             </div>
 
-            <p className="text-slate-400 mt-3">
+            <p className="text-[var(--secondary-text)] mt-3">
 
               July 2026
 
@@ -181,7 +255,21 @@ function Profile() {
 
           <button
             onClick={logout}
-            className="bg-red-600 hover:bg-red-700 transition px-8 py-3 rounded-xl text-white font-semibold inline-flex items-center gap-2"
+            className="
+              border
+              border-red-500
+              px-8
+              py-3
+              rounded-xl
+              text-red-500
+              font-semibold
+              inline-flex
+              items-center
+              gap-2
+              transition
+              hover:bg-red-600
+              hover:text-white
+            "
           >
 
             <LogOut size={20} />
@@ -195,9 +283,7 @@ function Profile() {
       </div>
 
     </MainLayout>
-
   );
-
 }
 
 export default Profile;

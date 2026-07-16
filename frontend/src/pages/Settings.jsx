@@ -11,111 +11,151 @@ import {
 } from "lucide-react";
 
 function Settings() {
-
+  // Logged-in user
   const user =
     JSON.parse(localStorage.getItem("user")) || {};
 
-  const [darkMode, setDarkMode] = useState(
-    JSON.parse(localStorage.getItem("darkMode")) ?? true
+  /*
+    Default = Dark Mode
+
+    lightMode false → Dark Mode
+    lightMode true  → Light Mode
+  */
+  const [lightMode, setLightMode] = useState(
+    JSON.parse(
+      localStorage.getItem("lightMode")
+    ) ?? false
   );
 
-  const [notifications, setNotifications] = useState(
-    JSON.parse(localStorage.getItem("notifications")) ?? true
-  );
-
-  useEffect(() => {
-
-    localStorage.setItem(
-      "darkMode",
-      JSON.stringify(darkMode)
+  // Notification preference
+  const [notifications, setNotifications] =
+    useState(
+      JSON.parse(
+        localStorage.getItem("notifications")
+      ) ?? true
     );
 
-    if (darkMode) {
-
-      document.documentElement.classList.add("dark");
-
-    } else {
-
-      document.documentElement.classList.remove("dark");
-
-    }
-
-  }, [darkMode]);
-
+  // Apply Light / Dark Theme
   useEffect(() => {
+    localStorage.setItem(
+      "lightMode",
+      JSON.stringify(lightMode)
+    );
 
+    if (lightMode) {
+      document.documentElement.classList.add(
+        "light"
+      );
+    } else {
+      document.documentElement.classList.remove(
+        "light"
+      );
+    }
+  }, [lightMode]);
+
+  // Save Notification Preference
+  useEffect(() => {
     localStorage.setItem(
       "notifications",
       JSON.stringify(notifications)
     );
-
   }, [notifications]);
 
   return (
-
     <MainLayout>
 
-      <h1 className="text-4xl font-bold text-white mb-8">
+      {/* Page Title */}
 
+      <h1
+        className="
+          text-4xl
+          font-bold
+          mb-8
+          text-[var(--primary-text)]
+        "
+      >
         Settings
-
       </h1>
 
       <div className="space-y-6">
 
-        {/* Account */}
+        {/* Account Information */}
 
-        <div className="bg-[#111C44] rounded-3xl border border-slate-700 p-8">
+        <div
+          className="
+            bg-[var(--card-bg)]
+            rounded-3xl
+            border
+            border-[var(--border-color)]
+            p-8
+            transition-colors
+            duration-300
+          "
+        >
 
           <div className="flex items-center gap-4">
 
             <User
-              className="text-indigo-400"
               size={30}
+              className="text-[var(--secondary-text)]"
             />
 
             <div>
 
-              <h2 className="text-2xl font-semibold text-white">
-
+              <h2
+                className="
+                  text-2xl
+                  font-semibold
+                  text-[var(--primary-text)]
+                "
+              >
                 Account Information
-
               </h2>
 
-              <p className="text-slate-400 mt-3">
-
-                <span className="text-white">
-
+              <p
+                className="
+                  text-[var(--secondary-text)]
+                  mt-3
+                "
+              >
+                <span
+                  className="
+                    text-[var(--primary-text)]
+                    font-medium
+                  "
+                >
                   Name :
-
                 </span>{" "}
 
-                {user.full_name}
-
+                {user.full_name || "Researcher"}
               </p>
 
-              <p className="text-slate-400">
+              <p className="text-[var(--secondary-text)]">
 
-                <span className="text-white">
-
+                <span
+                  className="
+                    text-[var(--primary-text)]
+                    font-medium
+                  "
+                >
                   Email :
-
                 </span>{" "}
 
-                {user.email}
-
+                {user.email || "Not available"}
               </p>
 
-              <p className="text-slate-400">
+              <p className="text-[var(--secondary-text)]">
 
-                <span className="text-white">
-
+                <span
+                  className="
+                    text-[var(--primary-text)]
+                    font-medium
+                  "
+                >
                   Role :
-
                 </span>{" "}
 
                 Researcher
-
               </p>
 
             </div>
@@ -126,63 +166,104 @@ function Settings() {
 
         {/* Theme */}
 
-        <div className="bg-[#111C44] rounded-3xl border border-slate-700 p-8">
+        <div
+          className="
+            bg-[var(--card-bg)]
+            rounded-3xl
+            border
+            border-[var(--border-color)]
+            p-8
+            transition-colors
+            duration-300
+          "
+        >
 
           <div className="flex justify-between items-center">
 
             <div className="flex items-center gap-4">
 
-              {darkMode ? (
+              {lightMode ? (
 
-                <Moon
+                <Sun
                   size={28}
-                  className="text-indigo-400"
+                  className="text-[var(--primary-text)]"
                 />
 
               ) : (
 
-                <Sun
+                <Moon
                   size={28}
-                  className="text-yellow-400"
+                  className="text-[var(--primary-text)]"
                 />
 
               )}
 
               <div>
 
-                <h2 className="text-2xl text-white font-semibold">
-
+                <h2
+                  className="
+                    text-2xl
+                    font-semibold
+                    text-[var(--primary-text)]
+                  "
+                >
                   Theme
-
                 </h2>
 
-                <p className="text-slate-400 mt-2">
-
-                  {darkMode
-                    ? "Dark Mode Enabled"
-                    : "Light Mode Enabled"}
-
+                <p
+                  className="
+                    text-[var(--secondary-text)]
+                    mt-2
+                  "
+                >
+                  {lightMode
+                    ? "Light Mode Enabled"
+                    : "Dark Mode Enabled"}
                 </p>
 
               </div>
 
             </div>
 
+            {/* Theme Switch */}
+
             <button
-
+              type="button"
               onClick={() =>
-                setDarkMode(!darkMode)
+                setLightMode(!lightMode)
               }
-
-              className={`w-16 h-8 rounded-full transition flex items-center px-1 ${
-                darkMode
-                  ? "bg-indigo-600 justify-end"
-                  : "bg-slate-500 justify-start"
-              }`}
-
+              aria-label="Toggle theme"
+              className={`
+                w-16
+                h-8
+                rounded-full
+                transition-all
+                duration-300
+                flex
+                items-center
+                px-1
+                ${
+                  lightMode
+                    ? "bg-black justify-end"
+                    : "bg-neutral-700 justify-start"
+                }
+              `}
             >
 
-              <div className="w-6 h-6 rounded-full bg-white"></div>
+              <div
+                className={`
+                  w-6
+                  h-6
+                  rounded-full
+                  transition-all
+                  duration-300
+                  ${
+                    lightMode
+                      ? "bg-white"
+                      : "bg-white"
+                  }
+                `}
+              />
 
             </button>
 
@@ -192,7 +273,17 @@ function Settings() {
 
         {/* Notifications */}
 
-        <div className="bg-[#111C44] rounded-3xl border border-slate-700 p-8">
+        <div
+          className="
+            bg-[var(--card-bg)]
+            rounded-3xl
+            border
+            border-[var(--border-color)]
+            p-8
+            transition-colors
+            duration-300
+          "
+        >
 
           <div className="flex justify-between items-center">
 
@@ -200,44 +291,73 @@ function Settings() {
 
               <Bell
                 size={28}
-                className="text-indigo-400"
+                className="text-[var(--secondary-text)]"
               />
 
               <div>
 
-                <h2 className="text-2xl text-white font-semibold">
-
+                <h2
+                  className="
+                    text-2xl
+                    font-semibold
+                    text-[var(--primary-text)]
+                  "
+                >
                   Notifications
-
                 </h2>
 
-                <p className="text-slate-400 mt-2">
-
+                <p
+                  className="
+                    text-[var(--secondary-text)]
+                    mt-2
+                  "
+                >
                   {notifications
                     ? "Enabled"
                     : "Disabled"}
-
                 </p>
 
               </div>
 
             </div>
 
-            <button
+            {/* Notification Switch */}
 
+            <button
+              type="button"
               onClick={() =>
                 setNotifications(!notifications)
               }
-
-              className={`w-16 h-8 rounded-full transition flex items-center px-1 ${
-                notifications
-                  ? "bg-green-600 justify-end"
-                  : "bg-slate-500 justify-start"
-              }`}
-
+              aria-label="Toggle notifications"
+              className={`
+                w-16
+                h-8
+                rounded-full
+                transition-all
+                duration-300
+                flex
+                items-center
+                px-1
+                ${
+                  notifications
+                    ? "bg-[var(--button-bg)] justify-end"
+                    : "bg-neutral-500 justify-start"
+                }
+              `}
             >
 
-              <div className="w-6 h-6 rounded-full bg-white"></div>
+              <div
+                className={`
+                  w-6
+                  h-6
+                  rounded-full
+                  ${
+                    notifications
+                      ? "bg-[var(--button-text)]"
+                      : "bg-white"
+                  }
+                `}
+              />
 
             </button>
 
@@ -247,28 +367,45 @@ function Settings() {
 
         {/* Password */}
 
-        <div className="bg-[#111C44] rounded-3xl border border-slate-700 p-8">
+        <div
+          className="
+            bg-[var(--card-bg)]
+            rounded-3xl
+            border
+            border-[var(--border-color)]
+            p-8
+            transition-colors
+            duration-300
+          "
+        >
 
           <div className="flex items-center gap-4">
 
             <Lock
               size={28}
-              className="text-indigo-400"
+              className="text-[var(--secondary-text)]"
             />
 
             <div>
 
-              <h2 className="text-2xl text-white font-semibold">
-
+              <h2
+                className="
+                  text-2xl
+                  font-semibold
+                  text-[var(--primary-text)]
+                "
+              >
                 Password
-
               </h2>
 
-              <p className="text-slate-400 mt-2">
-
+              <p
+                className="
+                  text-[var(--secondary-text)]
+                  mt-2
+                "
+              >
                 Password management will be
                 available in Module 3.
-
               </p>
 
             </div>
@@ -279,30 +416,47 @@ function Settings() {
 
         {/* About */}
 
-        <div className="bg-[#111C44] rounded-3xl border border-slate-700 p-8">
+        <div
+          className="
+            bg-[var(--card-bg)]
+            rounded-3xl
+            border
+            border-[var(--border-color)]
+            p-8
+            transition-colors
+            duration-300
+          "
+        >
 
           <div className="flex items-center gap-4">
 
             <Info
               size={28}
-              className="text-indigo-400"
+              className="text-[var(--secondary-text)]"
             />
 
             <div>
 
-              <h2 className="text-2xl text-white font-semibold">
-
+              <h2
+                className="
+                  text-2xl
+                  font-semibold
+                  text-[var(--primary-text)]
+                "
+              >
                 About ResearchMind AI
-
               </h2>
 
-              <p className="text-slate-400 mt-2">
-
+              <p
+                className="
+                  text-[var(--secondary-text)]
+                  mt-2
+                "
+              >
                 Version 1.0.0
-
               </p>
 
-              <p className="text-slate-500">
+              <p className="text-[var(--muted-text)]">
 
                 Local LLM + RAG Research Assistant
 
@@ -317,9 +471,7 @@ function Settings() {
       </div>
 
     </MainLayout>
-
   );
-
 }
 
 export default Settings;

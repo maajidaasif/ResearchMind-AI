@@ -9,14 +9,18 @@ import {
   LogOut,
 } from "lucide-react";
 
-import { NavLink, useNavigate } from "react-router-dom";
+import {
+  NavLink,
+  useNavigate,
+} from "react-router-dom";
 
 function Sidebar() {
-
   const navigate = useNavigate();
 
-  const user =
-    JSON.parse(localStorage.getItem("user"));
+  // Logged-in user
+  const user = JSON.parse(
+    localStorage.getItem("user")
+  );
 
   const userName =
     user?.full_name || "Researcher";
@@ -24,47 +28,87 @@ function Sidebar() {
   const firstLetter =
     userName.charAt(0).toUpperCase();
 
+  // Logout
   const logout = () => {
-
     localStorage.clear();
 
     navigate("/");
-
   };
 
+  // Active / Inactive Menu Style
   const menuClass = ({ isActive }) =>
-    `flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 ${
+    `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
       isActive
-        ? "bg-indigo-600 text-white shadow-lg"
-        : "text-slate-300 hover:bg-[#111C44] hover:text-white"
+        ? "bg-[var(--active-bg)] text-[var(--active-text)]"
+        : "text-[var(--secondary-text)] hover:bg-[var(--card-hover)] hover:text-[var(--primary-text)]"
     }`;
 
   return (
-
-    <aside className="w-72 min-h-screen bg-[#081028] border-r border-slate-800 flex flex-col">
+    <aside
+      className="
+        w-72
+        min-h-screen
+        bg-[var(--sidebar-bg)]
+        border-r
+        border-[var(--border-color)]
+        flex
+        flex-col
+        transition-colors
+        duration-300
+      "
+    >
 
       {/* Logo */}
 
-      <div className="p-8">
+      <div className="px-6 py-7">
 
         <div className="flex items-center gap-3">
 
-          <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center">
+          {/* Logo Icon */}
+
+          <div
+            className="
+              w-11
+              h-11
+              rounded-xl
+              bg-[var(--button-bg)]
+              flex
+              items-center
+              justify-center
+              transition-colors
+              duration-300
+            "
+          >
 
             <BrainCircuit
-              size={28}
-              className="text-white"
+              size={25}
+              className="text-[var(--button-text)]"
             />
 
           </div>
 
+          {/* Logo Text */}
+
           <div>
 
-            <h1 className="text-2xl font-bold text-white">
+            <h1
+              className="
+                text-xl
+                font-semibold
+                tracking-tight
+                text-[var(--primary-text)]
+              "
+            >
               ResearchMind
             </h1>
 
-            <p className="text-sm text-slate-400">
+            <p
+              className="
+                text-xs
+                text-[var(--muted-text)]
+                mt-1
+              "
+            >
               AI Research Platform
             </p>
 
@@ -74,100 +118,222 @@ function Sidebar() {
 
       </div>
 
-      {/* Menu */}
+      {/* Divider */}
 
-      <nav className="flex-1 px-5 space-y-2">
+      <div
+        className="
+          mx-5
+          border-t
+          border-[var(--border-color)]
+        "
+      />
+
+      {/* Navigation */}
+
+      <nav className="flex-1 px-4 py-6 space-y-1">
+
+        {/* Workspace Label */}
+
+        <p
+          className="
+            px-4
+            mb-3
+            text-xs
+            font-medium
+            uppercase
+            tracking-wider
+            text-[var(--muted-text)]
+          "
+        >
+          Workspace
+        </p>
 
         <NavLink
           to="/dashboard"
           className={menuClass}
         >
-          <LayoutDashboard size={20} />
+
+          <LayoutDashboard size={19} />
+
           Dashboard
+
         </NavLink>
 
         <NavLink
           to="/upload"
           className={menuClass}
         >
-          <Upload size={20} />
+
+          <Upload size={19} />
+
           Upload Papers
+
         </NavLink>
 
         <NavLink
           to="/papers"
           className={menuClass}
         >
-          <FolderOpen size={20} />
+
+          <FolderOpen size={19} />
+
           My Papers
+
         </NavLink>
 
         <NavLink
           to="/history"
           className={menuClass}
         >
-          <History size={20} />
+
+          <History size={19} />
+
           Analysis History
+
         </NavLink>
 
-        <div className="border-t border-slate-800 my-5"></div>
+        {/* Divider */}
+
+        <div
+          className="
+            border-t
+            border-[var(--border-color)]
+            my-5
+          "
+        />
+
+        {/* Account Label */}
+
+        <p
+          className="
+            px-4
+            mb-3
+            text-xs
+            font-medium
+            uppercase
+            tracking-wider
+            text-[var(--muted-text)]
+          "
+        >
+          Account
+        </p>
 
         <NavLink
           to="/settings"
           className={menuClass}
         >
-          <Settings size={20} />
+
+          <Settings size={19} />
+
           Settings
+
         </NavLink>
 
         <NavLink
           to="/help"
           className={menuClass}
         >
-          <CircleHelp size={20} />
+
+          <CircleHelp size={19} />
+
           Help & Support
+
         </NavLink>
 
       </nav>
 
       {/* User Card */}
 
-      <div className="px-5 pb-4">
+      <div className="px-4 pb-4">
 
-        <div className="bg-[#111C44] rounded-2xl p-4">
+        <div
+          className="
+            rounded-2xl
+            border
+            border-[var(--border-color)]
+            bg-[var(--card-bg)]
+            p-4
+            transition-colors
+            duration-300
+          "
+        >
 
           <div className="flex items-center gap-3">
 
-            <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-lg">
+            {/* Avatar */}
 
+            <div
+              className="
+                w-11
+                h-11
+                rounded-full
+                bg-[var(--button-bg)]
+                text-[var(--button-text)]
+                flex
+                items-center
+                justify-center
+                font-semibold
+                text-lg
+              "
+            >
               {firstLetter}
-
             </div>
 
-            <div>
+            {/* User Information */}
 
-              <h3 className="text-white font-semibold">
+            <div className="min-w-0 flex-1">
 
+              <h3
+                className="
+                  text-sm
+                  font-medium
+                  text-[var(--primary-text)]
+                  truncate
+                "
+              >
                 {userName}
-
               </h3>
 
-              <p className="text-slate-400 text-sm">
-
+              <p
+                className="
+                  text-xs
+                  text-[var(--muted-text)]
+                  mt-1
+                "
+              >
                 Researcher
-
               </p>
 
             </div>
 
           </div>
 
+          {/* Logout */}
+
           <button
             onClick={logout}
-            className="mt-4 w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-xl transition"
+            className="
+              mt-4
+              w-full
+              flex
+              items-center
+              justify-center
+              gap-2
+              rounded-xl
+              border
+              border-[var(--border-color)]
+              py-2.5
+              text-sm
+              font-medium
+              text-[var(--secondary-text)]
+              transition-all
+              duration-200
+              hover:bg-[var(--active-bg)]
+              hover:text-[var(--active-text)]
+            "
           >
 
-            <LogOut size={18} />
+            <LogOut size={17} />
 
             Logout
 
@@ -177,33 +343,52 @@ function Sidebar() {
 
       </div>
 
-     {/* Footer */}
+      {/* Footer */}
 
-<div className="p-6 text-center border-t border-slate-800">
+      <div
+        className="
+          border-t
+          border-[var(--border-color)]
+          px-5
+          py-5
+          text-center
+        "
+      >
 
-  <p className="text-white font-semibold">
+        <p
+          className="
+            text-xs
+            font-medium
+            text-[var(--secondary-text)]
+          "
+        >
+          ResearchMind AI v1.0.0
+        </p>
 
-    ResearchMind AI v1.0.0
+        <p
+          className="
+            text-xs
+            text-[var(--muted-text)]
+            mt-2
+          "
+        >
+          Built with React + Flask
+        </p>
 
-  </p>
+        <p
+          className="
+            text-[11px]
+            text-[var(--muted-text)]
+            mt-2
+          "
+        >
+          © 2026 All Rights Reserved
+        </p>
 
-  <p className="text-slate-500 text-sm mt-2">
+      </div>
 
-    Built with React + Flask
-
-  </p>
-
-  <p className="text-slate-600 text-xs mt-3">
-
-    © 2026 All Rights Reserved
-
-  </p>
-
-</div>
     </aside>
-
   );
-
 }
 
 export default Sidebar;

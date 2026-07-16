@@ -1,17 +1,32 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import {
+  Upload,
+  Library,
+  History,
+  Sparkles,
+  FileText,
+  BrainCircuit,
+  FileOutput,
+  ArrowRight,
+  Plus,
+} from "lucide-react";
+
 import MainLayout from "../layouts/MainLayout";
 
 function Dashboard() {
-
   const navigate = useNavigate();
 
-  // Logged In User
-  const user = JSON.parse(localStorage.getItem("user"));
+  // Logged-in user
+  const user = JSON.parse(
+    localStorage.getItem("user")
+  );
 
-  const userName = user?.full_name || "Researcher";
+  const userName =
+    user?.full_name || "Researcher";
 
-  // Greeting
+  // Greeting based on current time
   const hour = new Date().getHours();
 
   let greeting = "";
@@ -25,388 +40,786 @@ function Dashboard() {
   }
 
   // Dashboard Statistics
-  const [totalPapers, setTotalPapers] = useState(0);
+  const [totalPapers, setTotalPapers] =
+    useState(0);
 
   const totalAnalysis =
-    JSON.parse(localStorage.getItem("analysis"))?.length || 0;
+    JSON.parse(
+      localStorage.getItem("analysis")
+    )?.length || 0;
 
   const totalReports =
-    JSON.parse(localStorage.getItem("reports"))?.length || 0;
+    JSON.parse(
+      localStorage.getItem("reports")
+    )?.length || 0;
 
-  // Load Total Papers from Backend
+  // Load total papers from backend
   const loadDashboard = async () => {
-
     try {
-
       const response = await fetch(
         "http://127.0.0.1:5000/papers"
       );
 
+      if (!response.ok) {
+        throw new Error(
+          "Failed to load papers"
+        );
+      }
+
       const data = await response.json();
 
-      setTotalPapers(data.length);
-
+      setTotalPapers(
+        Array.isArray(data)
+          ? data.length
+          : 0
+      );
     } catch (error) {
+      console.log(
+        "Dashboard Error:",
+        error
+      );
 
-      console.log("Dashboard Error:", error);
-
+      setTotalPapers(0);
     }
-
   };
 
   useEffect(() => {
-
     loadDashboard();
-
   }, []);
 
   return (
-
     <MainLayout>
 
-      {/* Hero Section */}
+      {/* Welcome Section */}
 
-      <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-fuchsia-600 rounded-3xl p-10 shadow-2xl">
+      <section
+        className="
+          rounded-3xl
+          border
+          border-[var(--border-color)]
+          bg-[var(--card-bg)]
+          p-10
+          transition-colors
+          duration-300
+        "
+      >
 
-        <h1 className="text-5xl font-bold text-white">
+        <div className="max-w-4xl">
 
-          {greeting},{" "}
-
-          <span className="text-yellow-300">
-
-            {userName}
-
-          </span>
-
-          👋
-
-          <p className="text-white mt-5 text-lg">
-
-            Ready to continue your research today?
-
+          <p
+            className="
+              text-sm
+              font-medium
+              uppercase
+              tracking-[0.2em]
+              text-[var(--muted-text)]
+            "
+          >
+            Research Workspace
           </p>
 
-        </h1>
-
-        <p className="text-white mt-5 text-lg">
-
-          Ready to continue your research today?
-
-        </p>
-
-        <p className="text-indigo-100 mt-4 text-lg max-w-3xl leading-8">
-
-          Welcome to
-
-          <span className="font-semibold">
-
-            {" "}ResearchMind AI{" "}
-
-          </span>
-
-          — your AI-powered research assistant.
-
-          Upload research papers, generate literature surveys,
-
-          discover research gaps and interact with your
-
-          Local AI powered by RAG.
-
-        </p>
-
-        <div className="flex gap-5 mt-10">
-
-          <button
-            onClick={() => navigate("/upload")}
-            className="bg-white text-indigo-700 font-semibold px-8 py-3 rounded-xl hover:scale-105 transition"
+          <h1
+            className="
+              mt-4
+              text-4xl
+              font-semibold
+              tracking-tight
+              text-[var(--primary-text)]
+              md:text-5xl
+            "
           >
+            {greeting}, {userName} 👋
+          </h1>
 
-            Upload Papers
-
-          </button>
-
-          <button
-            onClick={() => navigate("/papers")}
-            className="border border-white text-white px-8 py-3 rounded-xl hover:bg-white hover:text-indigo-700 transition"
+          <p
+            className="
+              mt-5
+              max-w-3xl
+              text-lg
+              leading-8
+              text-[var(--secondary-text)]
+            "
           >
+            Upload research papers, organize your
+            sources, generate literature surveys,
+            discover research gaps, and work with
+            your local AI research assistant.
+          </p>
 
-            My Papers
+          <div className="mt-8 flex flex-wrap gap-4">
 
-          </button>
+            <button
+              onClick={() =>
+                navigate("/upload")
+              }
+              className="
+                flex
+                items-center
+                gap-2
+                rounded-xl
+                bg-[var(--button-bg)]
+                px-6
+                py-3
+                font-semibold
+                text-[var(--button-text)]
+                transition
+                hover:opacity-80
+              "
+            >
+
+              <Plus size={19} />
+
+              New Research
+
+            </button>
+
+            <button
+              onClick={() =>
+                navigate("/papers")
+              }
+              className="
+                flex
+                items-center
+                gap-2
+                rounded-xl
+                border
+                border-[var(--border-color)]
+                bg-transparent
+                px-6
+                py-3
+                font-semibold
+                text-[var(--primary-text)]
+                transition
+                hover:bg-[var(--card-hover)]
+              "
+            >
+
+              <Library size={19} />
+
+              My Papers
+
+            </button>
+
+          </div>
 
         </div>
 
-      </div>
+      </section>
 
       {/* Statistics */}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-10">
+      <section className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
 
-        <div className="bg-[#111C44] rounded-3xl p-6 border border-slate-700">
+        {/* Total Papers */}
 
-          <p className="text-slate-400">
+        <div
+          className="
+            rounded-2xl
+            border
+            border-[var(--border-color)]
+            bg-[var(--card-bg)]
+            p-6
+            transition
+            hover:bg-[var(--card-hover)]
+          "
+        >
 
-            Total Papers
+          <div className="flex items-center justify-between">
 
-          </p>
+            <p className="text-sm font-medium text-[var(--secondary-text)]">
+              Total Papers
+            </p>
 
-          <h2 className="text-5xl text-white font-bold mt-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--card-hover)]">
+
+              <FileText
+                size={20}
+                className="text-[var(--primary-text)]"
+              />
+
+            </div>
+
+          </div>
+
+          <h2 className="mt-6 text-4xl font-semibold text-[var(--primary-text)]">
 
             {totalPapers}
 
           </h2>
 
-          <p className="text-slate-500 mt-3">
+          <p className="mt-2 text-sm text-[var(--muted-text)]">
 
-            Uploaded PDFs
+            Uploaded research papers
 
           </p>
 
         </div>
 
-        <div className="bg-[#111C44] rounded-3xl p-6 border border-slate-700">
+        {/* AI Analyses */}
 
-          <p className="text-slate-400">
+        <div
+          className="
+            rounded-2xl
+            border
+            border-[var(--border-color)]
+            bg-[var(--card-bg)]
+            p-6
+            transition
+            hover:bg-[var(--card-hover)]
+          "
+        >
 
-            AI Analyses
+          <div className="flex items-center justify-between">
 
-          </p>
+            <p className="text-sm font-medium text-[var(--secondary-text)]">
 
-          <h2 className="text-5xl text-white font-bold mt-4">
+              AI Analyses
+
+            </p>
+
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--card-hover)]">
+
+              <BrainCircuit
+                size={20}
+                className="text-[var(--primary-text)]"
+              />
+
+            </div>
+
+          </div>
+
+          <h2 className="mt-6 text-4xl font-semibold text-[var(--primary-text)]">
 
             {totalAnalysis}
 
           </h2>
 
-          <p className="text-slate-500 mt-3">
+          <p className="mt-2 text-sm text-[var(--muted-text)]">
 
-            Completed
+            Completed analyses
 
           </p>
 
         </div>
 
-        <div className="bg-[#111C44] rounded-3xl p-6 border border-slate-700">
+        {/* Reports */}
 
-          <p className="text-slate-400">
+        <div
+          className="
+            rounded-2xl
+            border
+            border-[var(--border-color)]
+            bg-[var(--card-bg)]
+            p-6
+            transition
+            hover:bg-[var(--card-hover)]
+          "
+        >
 
-            Reports
+          <div className="flex items-center justify-between">
 
-          </p>
+            <p className="text-sm font-medium text-[var(--secondary-text)]">
 
-          <h2 className="text-5xl text-white font-bold mt-4">
+              Reports
+
+            </p>
+
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--card-hover)]">
+
+              <FileOutput
+                size={20}
+                className="text-[var(--primary-text)]"
+              />
+
+            </div>
+
+          </div>
+
+          <h2 className="mt-6 text-4xl font-semibold text-[var(--primary-text)]">
 
             {totalReports}
 
           </h2>
 
-          <p className="text-slate-500 mt-3">
+          <p className="mt-2 text-sm text-[var(--muted-text)]">
 
-            Generated
-
-          </p>
-
-        </div>
-
-        <div className="bg-[#111C44] rounded-3xl p-6 border border-slate-700">
-
-          <p className="text-slate-400">
-
-            AI Status
-
-          </p>
-
-          <h2 className="text-3xl text-green-400 font-bold mt-4">
-
-            Ready
-
-          </h2>
-
-          <p className="text-slate-500 mt-3">
-
-            Local AI Available
+            Generated reports
 
           </p>
 
         </div>
 
-      </div>
+        {/* AI Status */}
+
+        <div
+          className="
+            rounded-2xl
+            border
+            border-[var(--border-color)]
+            bg-[var(--card-bg)]
+            p-6
+            transition
+            hover:bg-[var(--card-hover)]
+          "
+        >
+
+          <div className="flex items-center justify-between">
+
+            <p className="text-sm font-medium text-[var(--secondary-text)]">
+
+              AI Status
+
+            </p>
+
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--card-hover)]">
+
+              <Sparkles
+                size={20}
+                className="text-[var(--primary-text)]"
+              />
+
+            </div>
+
+          </div>
+
+          <div className="mt-6 flex items-center gap-3">
+
+            <span className="h-2.5 w-2.5 rounded-full bg-[var(--primary-text)]" />
+
+            <h2 className="text-2xl font-semibold text-[var(--primary-text)]">
+
+              Ready
+
+            </h2>
+
+          </div>
+
+          <p className="mt-2 text-sm text-[var(--muted-text)]">
+
+            Local AI available
+
+          </p>
+
+        </div>
+
+      </section>
 
       {/* Start Research */}
 
       {totalPapers === 0 && (
 
-        <div className="mt-8 bg-[#111C44] border border-slate-700 rounded-3xl p-8">
+        <section
+          className="
+            mt-8
+            rounded-2xl
+            border
+            border-[var(--border-color)]
+            bg-[var(--card-bg)]
+            p-8
+          "
+        >
 
-          <h3 className="text-2xl font-semibold text-white">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
 
-            🚀 Start Your Research
+            <div>
 
-          </h3>
+              <h2 className="text-2xl font-semibold text-[var(--primary-text)]">
 
-          <p className="text-slate-400 mt-3">
+                Start your research workspace
 
-            Upload your first research paper to begin AI-powered analysis,
-            discover research gaps and generate literature surveys.
+              </h2>
 
-          </p>
+              <p className="mt-3 max-w-2xl leading-7 text-[var(--secondary-text)]">
 
-          <button
-            onClick={() => navigate("/upload")}
-            className="mt-6 bg-indigo-600 hover:bg-indigo-700 transition px-6 py-3 rounded-xl text-white font-semibold"
-          >
+                Upload your first research paper to
+                begin organizing sources and preparing
+                for AI-powered research analysis.
 
-            Upload First Paper
+              </p>
 
-          </button>
+            </div>
 
-        </div>
+            <button
+              onClick={() =>
+                navigate("/upload")
+              }
+              className="
+                flex
+                shrink-0
+                items-center
+                justify-center
+                gap-2
+                rounded-xl
+                bg-[var(--button-bg)]
+                px-6
+                py-3
+                font-semibold
+                text-[var(--button-text)]
+                transition
+                hover:opacity-80
+              "
+            >
+
+              <Upload size={19} />
+
+              Upload Paper
+
+            </button>
+
+          </div>
+
+        </section>
 
       )}
 
       {/* Quick Actions */}
 
-      <h2 className="text-white text-3xl font-bold mt-14 mb-6">
+      <section className="mt-12">
 
-        Quick Actions
+        <div>
 
-      </h2>
+          <h2 className="text-2xl font-semibold text-[var(--primary-text)]">
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-
-        <button
-          onClick={() => navigate("/upload")}
-          className="bg-[#111C44] rounded-3xl border border-slate-700 p-7 text-left hover:border-indigo-500 hover:scale-105 transition duration-300"
-        >
-
-          <h2 className="text-xl font-semibold text-white">
-
-            📄 Upload Papers
+            Quick Actions
 
           </h2>
 
-          <p className="text-slate-400 mt-3">
+          <p className="mt-2 text-sm text-[var(--muted-text)]">
 
-            Upload one or more research papers.
+            Access your main research tools.
 
           </p>
 
-        </button>
+        </div>
 
-        <button
-          onClick={() => navigate("/papers")}
-          className="bg-[#111C44] rounded-3xl border border-slate-700 p-7 text-left hover:border-indigo-500 hover:scale-105 transition duration-300"
-        >
+        <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
 
-          <h2 className="text-xl font-semibold text-white">
-
-            📚 My Papers
-
-          </h2>
-
-          <p className="text-slate-400 mt-3">
-
-            View all uploaded research papers.
-
-          </p>
-
-        </button>
-
-        <button
-          onClick={() => navigate("/history")}
-          className="bg-[#111C44] rounded-3xl border border-slate-700 p-7 text-left hover:border-indigo-500 hover:scale-105 transition duration-300"
-        >
-
-          <h2 className="text-xl font-semibold text-white">
-
-            📊 Analysis History
-
-          </h2>
-
-          <p className="text-slate-400 mt-3">
-
-            Review previous AI analyses.
-
-          </p>
-
-        </button>
-
-        <button
-          onClick={() => navigate("/upload")}
-          className="bg-[#111C44] rounded-3xl border border-slate-700 p-7 text-left hover:border-indigo-500 hover:scale-105 transition duration-300"
-        >
-
-          <h2 className="text-xl font-semibold text-white">
-
-            🚀 Start New Analysis
-
-          </h2>
-
-          <p className="text-slate-400 mt-3">
-
-            Begin a new AI-powered research workflow.
-
-          </p>
-
-        </button>
-
-      </div>
-
-      {/* Recent Activity */}
-
-      <div className="mt-14">
-
-        <div className="flex items-center justify-between mb-6">
-
-          <h2 className="text-white text-3xl font-bold">
-
-            Recent Activity
-
-          </h2>
+          {/* Upload Papers */}
 
           <button
-            onClick={() => navigate("/history")}
-            className="text-indigo-400 hover:text-indigo-300 transition"
+            onClick={() =>
+              navigate("/upload")
+            }
+            className="
+              group
+              rounded-2xl
+              border
+              border-[var(--border-color)]
+              bg-[var(--card-bg)]
+              p-6
+              text-left
+              transition
+              hover:bg-[var(--card-hover)]
+            "
           >
 
-            View History
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--card-hover)]">
+
+              <Upload
+                size={21}
+                className="text-[var(--primary-text)]"
+              />
+
+            </div>
+
+            <h3 className="mt-6 text-lg font-semibold text-[var(--primary-text)]">
+
+              Upload Papers
+
+            </h3>
+
+            <p className="mt-2 text-sm leading-6 text-[var(--muted-text)]">
+
+              Add one or more research papers to your workspace.
+
+            </p>
+
+            <div className="mt-5 flex items-center gap-2 text-sm font-medium text-[var(--secondary-text)]">
+
+              Open
+
+              <ArrowRight
+                size={16}
+                className="transition group-hover:translate-x-1"
+              />
+
+            </div>
+
+          </button>
+
+          {/* My Papers */}
+
+          <button
+            onClick={() =>
+              navigate("/papers")
+            }
+            className="
+              group
+              rounded-2xl
+              border
+              border-[var(--border-color)]
+              bg-[var(--card-bg)]
+              p-6
+              text-left
+              transition
+              hover:bg-[var(--card-hover)]
+            "
+          >
+
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--card-hover)]">
+
+              <Library
+                size={21}
+                className="text-[var(--primary-text)]"
+              />
+
+            </div>
+
+            <h3 className="mt-6 text-lg font-semibold text-[var(--primary-text)]">
+
+              My Papers
+
+            </h3>
+
+            <p className="mt-2 text-sm leading-6 text-[var(--muted-text)]">
+
+              Browse and manage all uploaded research papers.
+
+            </p>
+
+            <div className="mt-5 flex items-center gap-2 text-sm font-medium text-[var(--secondary-text)]">
+
+              Open
+
+              <ArrowRight
+                size={16}
+                className="transition group-hover:translate-x-1"
+              />
+
+            </div>
+
+          </button>
+
+          {/* Analysis History */}
+
+          <button
+            onClick={() =>
+              navigate("/history")
+            }
+            className="
+              group
+              rounded-2xl
+              border
+              border-[var(--border-color)]
+              bg-[var(--card-bg)]
+              p-6
+              text-left
+              transition
+              hover:bg-[var(--card-hover)]
+            "
+          >
+
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--card-hover)]">
+
+              <History
+                size={21}
+                className="text-[var(--primary-text)]"
+              />
+
+            </div>
+
+            <h3 className="mt-6 text-lg font-semibold text-[var(--primary-text)]">
+
+              Analysis History
+
+            </h3>
+
+            <p className="mt-2 text-sm leading-6 text-[var(--muted-text)]">
+
+              Review your previous AI research analyses.
+
+            </p>
+
+            <div className="mt-5 flex items-center gap-2 text-sm font-medium text-[var(--secondary-text)]">
+
+              Open
+
+              <ArrowRight
+                size={16}
+                className="transition group-hover:translate-x-1"
+              />
+
+            </div>
+
+          </button>
+
+          {/* New Analysis */}
+
+          <button
+            onClick={() =>
+              navigate("/upload")
+            }
+            className="
+              group
+              rounded-2xl
+              border
+              border-[var(--border-color)]
+              bg-[var(--card-bg)]
+              p-6
+              text-left
+              transition
+              hover:bg-[var(--card-hover)]
+            "
+          >
+
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--card-hover)]">
+
+              <Sparkles
+                size={21}
+                className="text-[var(--primary-text)]"
+              />
+
+            </div>
+
+            <h3 className="mt-6 text-lg font-semibold text-[var(--primary-text)]">
+
+              New Analysis
+
+            </h3>
+
+            <p className="mt-2 text-sm leading-6 text-[var(--muted-text)]">
+
+              Begin a new AI-powered research workflow.
+
+            </p>
+
+            <div className="mt-5 flex items-center gap-2 text-sm font-medium text-[var(--secondary-text)]">
+
+              Start
+
+              <ArrowRight
+                size={16}
+                className="transition group-hover:translate-x-1"
+              />
+
+            </div>
 
           </button>
 
         </div>
 
-        <div className="bg-[#111C44] rounded-3xl border border-slate-700 p-12 text-center">
+      </section>
 
-          <h3 className="text-2xl font-semibold text-white">
+      {/* Recent Activity */}
 
-            No Recent Activity
+      <section className="mt-12">
+
+        <div className="flex items-center justify-between">
+
+          <div>
+
+            <h2 className="text-2xl font-semibold text-[var(--primary-text)]">
+
+              Recent Activity
+
+            </h2>
+
+            <p className="mt-2 text-sm text-[var(--muted-text)]">
+
+              Your latest research activity will appear here.
+
+            </p>
+
+          </div>
+
+          <button
+            onClick={() =>
+              navigate("/history")
+            }
+            className="
+              flex
+              items-center
+              gap-2
+              text-sm
+              font-medium
+              text-[var(--secondary-text)]
+              transition
+              hover:text-[var(--primary-text)]
+            "
+          >
+
+            View History
+
+            <ArrowRight size={16} />
+
+          </button>
+
+        </div>
+
+        <div
+          className="
+            mt-6
+            rounded-2xl
+            border
+            border-[var(--border-color)]
+            bg-[var(--card-bg)]
+            px-8
+            py-14
+            text-center
+          "
+        >
+
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--card-hover)]">
+
+            <History
+              size={25}
+              className="text-[var(--secondary-text)]"
+            />
+
+          </div>
+
+          <h3 className="mt-6 text-xl font-semibold text-[var(--primary-text)]">
+
+            No recent activity
 
           </h3>
 
-          <p className="text-slate-400 mt-4">
+          <p className="mx-auto mt-3 max-w-lg leading-7 text-[var(--muted-text)]">
 
-            Your uploaded papers, AI analyses and generated reports
+            Your uploaded papers, completed AI
+            analyses, and generated research reports
             will appear here.
 
           </p>
 
           <button
-            onClick={() => navigate("/upload")}
-            className="mt-8 bg-indigo-600 hover:bg-indigo-700 transition px-6 py-3 rounded-xl text-white font-semibold"
+            onClick={() =>
+              navigate("/upload")
+            }
+            className="
+              mt-7
+              rounded-xl
+              border
+              border-[var(--border-color)]
+              px-6
+              py-3
+              font-medium
+              text-[var(--primary-text)]
+              transition
+              hover:bg-[var(--card-hover)]
+            "
           >
 
-            Upload Your First Paper
+            Upload your first paper
 
           </button>
 
         </div>
 
-      </div>
+      </section>
 
     </MainLayout>
-
   );
-
 }
 
 export default Dashboard;
