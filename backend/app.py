@@ -12,6 +12,7 @@ from routes.auth_routes import auth
 from routes.paper_routes import paper
 from routes.literature_routes import literature
 from routes.report_routes import report_bp
+from routes.chat_routes import chat_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -30,6 +31,7 @@ app.register_blueprint(auth)
 app.register_blueprint(paper)
 app.register_blueprint(literature)
 app.register_blueprint(report_bp)
+app.register_blueprint(chat_bp)
 
 
 @app.route("/")
@@ -41,4 +43,7 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
 
-    app.run(debug=True)
+    app.run(
+    debug=False,
+    use_reloader=False
+)
