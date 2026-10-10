@@ -101,7 +101,7 @@ function Sidebar() {
                 text-[var(--primary-text)]
               "
             >
-              ResearchMind
+              ResearchMind AI
             </h1>
 
             <p

@@ -8,6 +8,7 @@ import MyPapers from "./pages/MyPapers";
 import History from "./pages/History";
 import ResearchGap from "./pages/ResearchGap";
 import LiteratureSurvey from "./pages/LiteratureSurvey";
+import PaperComparison from "./pages/PaperComparison";
 import Report from "./pages/Report";
 import Settings from "./pages/Settings";
 import Help from "./pages/Help";
@@ -80,7 +81,18 @@ function App() {
           }
         />
 
-        {/* Research Gap */}
+        {/* Paper Comparison - Module 8 */}
+
+        <Route
+          path="/paper-comparison"
+          element={
+            <ProtectedRoute>
+              <PaperComparison />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Research Gap - Module 9 */}
 
         <Route
           path="/research-gap"
@@ -91,7 +103,7 @@ function App() {
           }
         />
 
-        {/* Literature Survey */}
+        {/* Literature Survey - Module 10 */}
 
         <Route
           path="/literature-survey"

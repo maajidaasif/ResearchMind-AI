@@ -405,7 +405,7 @@ function Settings() {
                 "
               >
                 Password management will be
-                available in Module 3.
+                available.
               </p>
 
             </div>
